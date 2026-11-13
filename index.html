@@ -627,6 +627,9 @@ const LS = {
 const $ = (s,r=document)=>r.querySelector(s);
 const app = $('#app');
 const h = (html)=>{ const t=document.createElement('template'); t.innerHTML=html.trim(); return t.content.firstChild; };
+// 학생 화면은 방 채널로 받은 snap을 그대로 그린다. 채널에는 방 코드만 알면 누구나 메시지를 보낼 수 있으므로
+// 받은 값을 HTML에 넣을 때는 반드시 esc()를 거친다.
+const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
 function toast(msg){
   const host=$('#toast-host'); host.innerHTML='';
   const el=h(`<div class="toast">${msg}</div>`); host.appendChild(el);
@@ -1415,7 +1418,7 @@ function drawStudent(snap){
     const submitted = me.submitted && !editing;
     body = `<div class="s-command">
         <div class="eyebrow">중앙 지령</div>
-        <div class="cn">${snap.command}</div>
+        <div class="cn">${esc(snap.command)}</div>
         <div class="notice" id="s-timer" style="margin-top:8px">남은 협상 시간 · ${fmtTime(snap.timeLeft)}</div>
       </div>
       <div class="s-input-area">
@@ -1435,7 +1438,7 @@ function drawStudent(snap){
   }
   else if (snap.phase==='revealing'){
     body = `<div class="s-command"><div class="eyebrow">결과 공개 중</div>
-      <div class="cn" style="font-size:54px">${snap.command}</div>
+      <div class="cn" style="font-size:54px">${esc(snap.command)}</div>
       <p class="notice" style="margin-top:14px">교실 화면을 주목하세요…</p></div>`;
     if (me.lastGain!=null && Store.get().phase==='revealing'){
       // 개인 세력은 reveal 마지막 단계에서 노출 — 여기선 항상 보이게 처리
@@ -1445,7 +1448,7 @@ function drawStudent(snap){
     const gain = me.lastGain||0;
     body = `<div class="s-submitted">
       <div class="eyebrow">이번 라운드 획득</div>
-      <div class="gain-pop">${gain>0?'+'+gain.toLocaleString():'±0'}</div>
+      <div class="gain-pop">${gain>0?'+'+esc(gain.toLocaleString()):'±0'}</div>
       <div class="notice" style="margin-top:14px">세력</div>
       <p class="notice" style="margin-top:18px">다음 지령을 기다리세요.</p>
     </div>`;
@@ -1465,9 +1468,9 @@ function drawStudent(snap){
 
   const el = h(`<div class="student fade">
     <div class="s-reveal-row">
-      <button class="peek" data-val="${me.nick}">👁 내 닉네임</button>
+      <button class="peek" data-val="${esc(me.nick)}">👁 내 닉네임</button>
       <button class="peek" data-val="${teamTxt}">👁 내 팀</button>
-      <button class="peek" data-val="${me.power.toLocaleString()} 세력">👁 내 세력</button>
+      <button class="peek" data-val="${esc(me.power.toLocaleString())} 세력">👁 내 세력</button>
     </div>
     <div class="card" style="flex:1;display:flex;flex-direction:column">${body}</div>
   </div>`);

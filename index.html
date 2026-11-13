@@ -601,7 +601,7 @@ const Conn = {
   // 배포 전 아래 두 값을 채우면 학생은 입력 없이 QR/링크로 바로 접속됩니다.
   baked: {
     URL: "https://syowcmidovfsyhxsqyhp.supabase.co/rest/v1/",   // 선생님 여기 따옴표 사이에 넣으세요 예: https://abcdwxyz.supabase.co
-    KEY: "sb_publishable_fX24DNMsEYUuoOWa5i0N1A_svSwYo85",   // 선생님 여기 따옴표 사이에 넣으세요  Legacy anon key (eyJ... 로 시작). Settings → API → Project API keys → anon public
+    KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5b3djbWlkb3Zmc3loeHNxeWhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ1MDgxNjEsImV4cCI6MjExMDA4NDE2MX0.RsXPqyY6VDhiSEuYbC7qLbLveHkNyGPkn4QpgQnrH5k",   // 선생님 여기 따옴표 사이에 넣으세요  Legacy anon key (eyJ... 로 시작). Settings → API → Project API keys → anon public
   },
   cfg(){
     if (this.baked.URL && this.baked.KEY) return { url:this.baked.URL, key:this.baked.KEY };
